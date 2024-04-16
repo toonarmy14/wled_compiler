@@ -20,45 +20,45 @@ jobs:
         python -m pip install --upgrade pip
         pip install --upgrade platformio
         git rm -r $GITHUB_WORKSPACE/*.bin || true
-    - name: Run PlatformIO WLED-FastLED nodemcuv2
-      run: |
-        rm -rf /tmp/WLEDtemp/* || true
-        mkdir -p /tmp/WLEDtemp
-        wget https://github.com/atuline/WLED/archive/refs/heads/WLED-FastLED.zip -O /tmp/WLEDtemp/mm.zip
-        unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
-        find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
-        cd `cat /tmp/WLEDtemp/wledfoldername`
-        npm install
-        echo '[env:custom_build]' >>platformio.ini
-        echo 'extends = env:nodemcuv2' >>platformio.ini
-        echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
-        echo 'lib_deps = ' >>platformio.ini
-        echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
-        echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
-        echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
-        echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
-        echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
-        echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
-        echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    # - name: Run PlatformIO WLED-FastLED nodemcuv2
+    #   run: |
+    #     rm -rf /tmp/WLEDtemp/* || true
+    #     mkdir -p /tmp/WLEDtemp
+    #     wget https://github.com/atuline/WLED/archive/refs/heads/WLED-FastLED.zip -O /tmp/WLEDtemp/mm.zip
+    #     unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
+    #     find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
+    #     cd `cat /tmp/WLEDtemp/wledfoldername`
+    #     npm install
+    #     echo '[env:custom_build]' >>platformio.ini
+    #     echo 'extends = env:nodemcuv2' >>platformio.ini
+    #     echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
+    #     echo 'lib_deps = ' >>platformio.ini
+    #     echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
+    #     echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
+    #     echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    #     echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
+    #     echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
         
-        pio run -e custom_build || pio run -e custom_build || true
-    - name: Copy Files WLED-FastLED nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
-        cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_WLED-FastLED_nodemcuv2.bin || true
-        date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
-    - name: Commit Files WLED-FastLED nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-        git add $GITHUB_WORKSPACE/build_WLED-FastLED_nodemcuv2.bin || true
-        git add $GITHUB_WORKSPACE/last_update_date.txt || true
-        git commit -m "Commit Custom Build" || true
-        git push origin main || true
+    #     pio run -e custom_build || pio run -e custom_build || true
+    # - name: Copy Files WLED-FastLED nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
+    #     cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_WLED-FastLED_nodemcuv2.bin || true
+    #     date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
+    # - name: Commit Files WLED-FastLED nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     git config user.name "GitHub Actions Bot"
+    #     git config user.email "<>"
+    #     git add $GITHUB_WORKSPACE/build_WLED-FastLED_nodemcuv2.bin || true
+    #     git add $GITHUB_WORKSPACE/last_update_date.txt || true
+    #     git commit -m "Commit Custom Build" || true
+    #     git push origin main || true
     - name: Run PlatformIO WLED-FastLED esp8266_2m
       run: |
         rm -rf /tmp/WLEDtemp/* || true
@@ -176,45 +176,45 @@ jobs:
         git add $GITHUB_WORKSPACE/last_update_date.txt || true
         git commit -m "Commit Custom Build" || true
         git push origin main || true
-    - name: Run PlatformIO assets nodemcuv2
-      run: |
-        rm -rf /tmp/WLEDtemp/* || true
-        mkdir -p /tmp/WLEDtemp
-        wget https://github.com/atuline/WLED/archive/refs/heads/assets.zip -O /tmp/WLEDtemp/mm.zip
-        unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
-        find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
-        cd `cat /tmp/WLEDtemp/wledfoldername`
-        npm install
-        echo '[env:custom_build]' >>platformio.ini
-        echo 'extends = env:nodemcuv2' >>platformio.ini
-        echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
-        echo 'lib_deps = ' >>platformio.ini
-        echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
-        echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
-        echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
-        echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
-        echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
-        echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
-        echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    # - name: Run PlatformIO assets nodemcuv2
+    #   run: |
+    #     rm -rf /tmp/WLEDtemp/* || true
+    #     mkdir -p /tmp/WLEDtemp
+    #     wget https://github.com/atuline/WLED/archive/refs/heads/assets.zip -O /tmp/WLEDtemp/mm.zip
+    #     unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
+    #     find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
+    #     cd `cat /tmp/WLEDtemp/wledfoldername`
+    #     npm install
+    #     echo '[env:custom_build]' >>platformio.ini
+    #     echo 'extends = env:nodemcuv2' >>platformio.ini
+    #     echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
+    #     echo 'lib_deps = ' >>platformio.ini
+    #     echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
+    #     echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
+    #     echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    #     echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
+    #     echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
         
-        pio run -e custom_build || pio run -e custom_build || true
-    - name: Copy Files assets nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
-        cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_assets_nodemcuv2.bin || true
-        date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
-    - name: Commit Files assets nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-        git add $GITHUB_WORKSPACE/build_assets_nodemcuv2.bin || true
-        git add $GITHUB_WORKSPACE/last_update_date.txt || true
-        git commit -m "Commit Custom Build" || true
-        git push origin main || true
+    #     pio run -e custom_build || pio run -e custom_build || true
+    # - name: Copy Files assets nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
+    #     cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_assets_nodemcuv2.bin || true
+    #     date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
+    # - name: Commit Files assets nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     git config user.name "GitHub Actions Bot"
+    #     git config user.email "<>"
+    #     git add $GITHUB_WORKSPACE/build_assets_nodemcuv2.bin || true
+    #     git add $GITHUB_WORKSPACE/last_update_date.txt || true
+    #     git commit -m "Commit Custom Build" || true
+    #     git push origin main || true
     - name: Run PlatformIO assets esp8266_2m
       run: |
         rm -rf /tmp/WLEDtemp/* || true
@@ -332,45 +332,45 @@ jobs:
         git add $GITHUB_WORKSPACE/last_update_date.txt || true
         git commit -m "Commit Custom Build" || true
         git push origin main || true
-    - name: Run PlatformIO dev nodemcuv2
-      run: |
-        rm -rf /tmp/WLEDtemp/* || true
-        mkdir -p /tmp/WLEDtemp
-        wget https://github.com/atuline/WLED/archive/refs/heads/dev.zip -O /tmp/WLEDtemp/mm.zip
-        unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
-        find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
-        cd `cat /tmp/WLEDtemp/wledfoldername`
-        npm install
-        echo '[env:custom_build]' >>platformio.ini
-        echo 'extends = env:nodemcuv2' >>platformio.ini
-        echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
-        echo 'lib_deps = ' >>platformio.ini
-        echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
-        echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
-        echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
-        echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
-        echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
-        echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
-        echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    # - name: Run PlatformIO dev nodemcuv2
+    #   run: |
+    #     rm -rf /tmp/WLEDtemp/* || true
+    #     mkdir -p /tmp/WLEDtemp
+    #     wget https://github.com/atuline/WLED/archive/refs/heads/dev.zip -O /tmp/WLEDtemp/mm.zip
+    #     unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
+    #     find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
+    #     cd `cat /tmp/WLEDtemp/wledfoldername`
+    #     npm install
+    #     echo '[env:custom_build]' >>platformio.ini
+    #     echo 'extends = env:nodemcuv2' >>platformio.ini
+    #     echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
+    #     echo 'lib_deps = ' >>platformio.ini
+    #     echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
+    #     echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
+    #     echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    #     echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
+    #     echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
         
-        pio run -e custom_build || pio run -e custom_build || true
-    - name: Copy Files dev nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
-        cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_dev_nodemcuv2.bin || true
-        date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
-    - name: Commit Files dev nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-        git add $GITHUB_WORKSPACE/build_dev_nodemcuv2.bin || true
-        git add $GITHUB_WORKSPACE/last_update_date.txt || true
-        git commit -m "Commit Custom Build" || true
-        git push origin main || true
+    #     pio run -e custom_build || pio run -e custom_build || true
+    # - name: Copy Files dev nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
+    #     cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_dev_nodemcuv2.bin || true
+    #     date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
+    # - name: Commit Files dev nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     git config user.name "GitHub Actions Bot"
+    #     git config user.email "<>"
+    #     git add $GITHUB_WORKSPACE/build_dev_nodemcuv2.bin || true
+    #     git add $GITHUB_WORKSPACE/last_update_date.txt || true
+    #     git commit -m "Commit Custom Build" || true
+    #     git push origin main || true
     - name: Run PlatformIO dev esp8266_2m
       run: |
         rm -rf /tmp/WLEDtemp/* || true
@@ -488,45 +488,45 @@ jobs:
         git add $GITHUB_WORKSPACE/last_update_date.txt || true
         git commit -m "Commit Custom Build" || true
         git push origin main || true
-    - name: Run PlatformIO master nodemcuv2
-      run: |
-        rm -rf /tmp/WLEDtemp/* || true
-        mkdir -p /tmp/WLEDtemp
-        wget https://github.com/atuline/WLED/archive/refs/heads/master.zip -O /tmp/WLEDtemp/mm.zip
-        unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
-        find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
-        cd `cat /tmp/WLEDtemp/wledfoldername`
-        npm install
-        echo '[env:custom_build]' >>platformio.ini
-        echo 'extends = env:nodemcuv2' >>platformio.ini
-        echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
-        echo 'lib_deps = ' >>platformio.ini
-        echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
-        echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
-        echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
-        echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
-        echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
-        echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
-        echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    # - name: Run PlatformIO master nodemcuv2
+    #   run: |
+    #     rm -rf /tmp/WLEDtemp/* || true
+    #     mkdir -p /tmp/WLEDtemp
+    #     wget https://github.com/atuline/WLED/archive/refs/heads/master.zip -O /tmp/WLEDtemp/mm.zip
+    #     unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
+    #     find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
+    #     cd `cat /tmp/WLEDtemp/wledfoldername`
+    #     npm install
+    #     echo '[env:custom_build]' >>platformio.ini
+    #     echo 'extends = env:nodemcuv2' >>platformio.ini
+    #     echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
+    #     echo 'lib_deps = ' >>platformio.ini
+    #     echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
+    #     echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
+    #     echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    #     echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
+    #     echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
         
-        pio run -e custom_build || pio run -e custom_build || true
-    - name: Copy Files master nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
-        cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_master_nodemcuv2.bin || true
-        date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
-    - name: Commit Files master nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-        git add $GITHUB_WORKSPACE/build_master_nodemcuv2.bin || true
-        git add $GITHUB_WORKSPACE/last_update_date.txt || true
-        git commit -m "Commit Custom Build" || true
-        git push origin main || true
+    #     pio run -e custom_build || pio run -e custom_build || true
+    # - name: Copy Files master nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
+    #     cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_master_nodemcuv2.bin || true
+    #     date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
+    # - name: Commit Files master nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     git config user.name "GitHub Actions Bot"
+    #     git config user.email "<>"
+    #     git add $GITHUB_WORKSPACE/build_master_nodemcuv2.bin || true
+    #     git add $GITHUB_WORKSPACE/last_update_date.txt || true
+    #     git commit -m "Commit Custom Build" || true
+    #     git push origin main || true
     - name: Run PlatformIO master esp8266_2m
       run: |
         rm -rf /tmp/WLEDtemp/* || true
@@ -644,45 +644,45 @@ jobs:
         git add $GITHUB_WORKSPACE/last_update_date.txt || true
         git commit -m "Commit Custom Build" || true
         git push origin main || true
-    - name: Run PlatformIO refactoring nodemcuv2
-      run: |
-        rm -rf /tmp/WLEDtemp/* || true
-        mkdir -p /tmp/WLEDtemp
-        wget https://github.com/atuline/WLED/archive/refs/heads/refactoring.zip -O /tmp/WLEDtemp/mm.zip
-        unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
-        find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
-        cd `cat /tmp/WLEDtemp/wledfoldername`
-        npm install
-        echo '[env:custom_build]' >>platformio.ini
-        echo 'extends = env:nodemcuv2' >>platformio.ini
-        echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
-        echo 'lib_deps = ' >>platformio.ini
-        echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
-        echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
-        echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
-        echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
-        echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
-        echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
-        echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
-        echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    # - name: Run PlatformIO refactoring nodemcuv2
+    #   run: |
+    #     rm -rf /tmp/WLEDtemp/* || true
+    #     mkdir -p /tmp/WLEDtemp
+    #     wget https://github.com/atuline/WLED/archive/refs/heads/refactoring.zip -O /tmp/WLEDtemp/mm.zip
+    #     unzip -o /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
+    #     find /tmp/WLEDtemp -maxdepth 1 -name "WLED-*" -type d >> /tmp/WLEDtemp/wledfoldername
+    #     cd `cat /tmp/WLEDtemp/wledfoldername`
+    #     npm install
+    #     echo '[env:custom_build]' >>platformio.ini
+    #     echo 'extends = env:nodemcuv2' >>platformio.ini
+    #     echo 'build_flags = ${env:nodemcuv2.build_flags} -D SR_DEBUG -D MIC_LOGGER -D LOLIN_WIFI_FIX -D WLED_DEBUG -D WLED_DEBUG_IMPROV -D LEDPIN=0 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_BUSSES=6 -D DEFAULT_LED_COUNT=561 -D ABL_MILLIAMPS_DEFAULT=4500 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LED_MEMORY=64000 -D CLIENT_SSID='\''"searching..."'\'' -D CLIENT_PASS='\''"onceuponapassword"'\'' -D USERMOD_SENSORSTOMQTT -D RGB_ROTARY_ENCODER -D USERMOD_ADS1115' >>platformio.ini
+    #     echo 'lib_deps = ' >>platformio.ini
+    #     echo '  ${env:nodemcuv2.lib_deps}' >>platformio.ini
+    #     echo '  adafruit/Adafruit BMP280 Library @ 2.1.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit CCS811 Library @ 1.0.4' >>platformio.ini
+    #     echo '  adafruit/Adafruit Si7021 Library @ 1.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
+    #     echo '  lennarthennigs/ESP Rotary@^1.5.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit BusIO @ 1.13.2' >>platformio.ini
+    #     echo '  adafruit/Adafruit ADS1X15 @ 2.4.0' >>platformio.ini
+    #     echo '  adafruit/Adafruit Unified Sensor' >>platformio.ini
         
-        pio run -e custom_build || pio run -e custom_build || true
-    - name: Copy Files refactoring nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
-        cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_refactoring_nodemcuv2.bin || true
-        date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
-    - name: Commit Files refactoring nodemcuv2
-      run: |
-        cd $GITHUB_WORKSPACE
-        git config user.name "GitHub Actions Bot"
-        git config user.email "<>"
-        git add $GITHUB_WORKSPACE/build_refactoring_nodemcuv2.bin || true
-        git add $GITHUB_WORKSPACE/last_update_date.txt || true
-        git commit -m "Commit Custom Build" || true
-        git push origin main || true
+    #     pio run -e custom_build || pio run -e custom_build || true
+    # - name: Copy Files refactoring nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     WLEDFOLDERNAME=`cat /tmp/WLEDtemp/wledfoldername`
+    #     cp ${WLEDFOLDERNAME}/build_output/firmware/custom_build.bin $GITHUB_WORKSPACE/build_refactoring_nodemcuv2.bin || true
+    #     date -I | tr -d '\n' >$GITHUB_WORKSPACE/last_update_date.txt
+    # - name: Commit Files refactoring nodemcuv2
+    #   run: |
+    #     cd $GITHUB_WORKSPACE
+    #     git config user.name "GitHub Actions Bot"
+    #     git config user.email "<>"
+    #     git add $GITHUB_WORKSPACE/build_refactoring_nodemcuv2.bin || true
+    #     git add $GITHUB_WORKSPACE/last_update_date.txt || true
+    #     git commit -m "Commit Custom Build" || true
+    #     git push origin main || true
     - name: Run PlatformIO refactoring esp8266_2m
       run: |
         rm -rf /tmp/WLEDtemp/* || true
